@@ -25,9 +25,13 @@ jobs:
           /usr/local/bin/whirlpooldeep
           /usr/local/bin/tigerdeep
   build-windows:
-      runs-on: windows-latest
+      runs-on: windows-2019
       steps:
       - uses: actions/checkout@v4
+      - name: Setup MinGW
+        uses: egor-tensin/setup-mingw@v2
+        with:
+          version: 12.2.0
       - name: Build
         run: |
           sh bootstrap.sh
