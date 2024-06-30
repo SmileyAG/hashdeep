@@ -19,4 +19,4 @@ jobs:
         sh bootstrap.sh
         ./configure
         make
-        make install
+        sudo make install
