@@ -4,18 +4,12 @@ on:
   pull_request:
   workflow_dispatch:
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
+  build-linux:
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Setup MinGW
-      uses: egor-tensin/setup-mingw@v2
     - name: Build
       run: |
-        sudo chmod -R 777 ./
         sh bootstrap.sh
         ./configure
         make
@@ -24,4 +18,21 @@ jobs:
       with:
         name: hashdeep
         path: |
-          /usr/local/bin
+          /usr/local/bin/hashdeep
+          /usr/local/bin/md5deep
+          /usr/local/bin/sha1deep
+          /usr/local/bin/sha256deep
+          /usr/local/bin/whirlpooldeep
+          /usr/local/bin/tigerdeep
+  build-windows:
+      runs-on: windows-latest
+      steps:
+      - uses: actions/checkout@v4
+      - name: Setup MinGW
+        uses: egor-tensin/setup-mingw@v2
+      - name: Build
+        run: |
+          sh bootstrap.sh
+          ./configure
+          make
+          make install
