@@ -24,4 +24,4 @@ jobs:
       with:
         name: hashdeep
         path: |
-          ./
+          /usr/local/bin
