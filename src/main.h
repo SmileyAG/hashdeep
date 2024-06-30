@@ -63,6 +63,7 @@ typedef enum {
   alg_tiger,
   alg_whirlpool, 
   alg_sha3,
+  alg_sha512,
   
   // alg_unknown must always be last in this list. It's used
   // as a loop terminator in many functions.
@@ -76,6 +77,7 @@ inline std::ostream & operator << (std::ostream &os,const hashid_t &h)
   case alg_md5:       os << "alg_md5" ; break ;
   case alg_sha1:      os << "alg_sha1" ; break ;
   case alg_sha256:    os << "alg_sha256" ; break ;
+  case alg_sha512:    os << "alg_sha512" ; break ;
   case alg_tiger:     os << "alg_tiger" ; break ;
   case alg_whirlpool: os << "alg_whirlpool" ; break ;
   case alg_sha3:      os << "alg_sha3" ; break ;
@@ -91,6 +93,7 @@ inline std::ostream & operator << (std::ostream &os,const hashid_t &h)
 #define DEFAULT_ENABLE_MD5         TRUE
 #define DEFAULT_ENABLE_SHA1        FALSE
 #define DEFAULT_ENABLE_SHA256      TRUE
+#define DEFAULT_ENABLE_SHA512      FALSE
 #define DEFAULT_ENABLE_TIGER       FALSE
 #define DEFAULT_ENABLE_WHIRLPOOL   FALSE
 #define DEFAULT_ENABLE_SHA3        FALSE

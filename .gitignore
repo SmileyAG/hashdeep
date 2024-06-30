@@ -19,6 +19,7 @@ src/md5deep
 src/hashdeep
 src/sha1deep
 src/sha256deep
+src/sha512deep
 src/whirlpooldeep
 src/tigerdeep
 src/sha3deep

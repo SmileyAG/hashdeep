@@ -18,8 +18,8 @@
 #define ONE_MEGABYTE  1048576
 
 #define MAX_ALGORITHM_RESIDUE_SIZE 256
-// Raised for SHA-3
-#define MAX_ALGORITHM_CONTEXT_SIZE 384
+// Raised for SHA-512
+#define MAX_ALGORITHM_CONTEXT_SIZE 512
 
 #ifdef _WIN32
 /* For some reason this doesn't work properly with mingw */

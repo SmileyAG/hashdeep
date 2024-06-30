@@ -395,8 +395,8 @@ int state::identify_hash_file_type(FILE *f,uint32_t *expected_hashes)
 	    if (STRINGS_EQUAL(buf,NSRL_20_HEADER)) return TYPE_NSRL_20;
 	}
 	
-	/* Check for those that have md5 or sha1 or sha256 */
-	if (opt_md5deep_mode_algorithm == alg_md5 || opt_md5deep_mode_algorithm == alg_sha1 || opt_md5deep_mode_algorithm == alg_sha256) {
+	/* Check for those that have md5 or sha1 or sha256 or sha512 */
+	if (opt_md5deep_mode_algorithm == alg_md5 || opt_md5deep_mode_algorithm == alg_sha1 || opt_md5deep_mode_algorithm == alg_sha256 || opt_md5deep_mode_algorithm == alg_sha512) {
 	    if (STRINGS_EQUAL(buf,ILOOK3_HEADER)) return TYPE_ILOOK3;
 	    if (STRINGS_EQUAL(buf,ILOOK4_HEADER)) return TYPE_ILOOK3;
 	}
@@ -443,12 +443,14 @@ int state::find_hash_in_line(char *buf, int fileType, char *fn)
 	if(opt_md5deep_mode_algorithm == alg_md5)    return find_rigid_hash(buf,fn,3,1);
 	if(opt_md5deep_mode_algorithm == alg_sha1)   return find_rigid_hash(buf,fn,3,2);
 	if(opt_md5deep_mode_algorithm == alg_sha256) return find_rigid_hash(buf,fn,3,6);
-	return FALSE;			// ilook3 only has md5, sha1 and sha256
+    if(opt_md5deep_mode_algorithm == alg_sha512) return find_rigid_hash(buf,fn,3,8);
+	return FALSE;			// ilook3 only has md5, sha1, sha256 and sha512
     case TYPE_ILOOK4:	    
 	if(opt_md5deep_mode_algorithm == alg_md5)    return find_rigid_hash(buf,fn,3,1);
 	if(opt_md5deep_mode_algorithm == alg_sha1)   return find_rigid_hash(buf,fn,3,2);
 	if(opt_md5deep_mode_algorithm == alg_sha256) return find_rigid_hash(buf,fn,3,6);
-	return FALSE;			// ilook4 only has md5, sha1 and sha256
+    if(opt_md5deep_mode_algorithm == alg_sha512) return find_rigid_hash(buf,fn,3,8);
+	return FALSE;			// ilook4 only has md5, sha1, sha256 and sha512
     case TYPE_MD5DEEP_SIZE: return find_md5deep_size_hash(buf,fn);
     }
     return FALSE;

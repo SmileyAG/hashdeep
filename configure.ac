@@ -145,7 +145,7 @@ AC_CHECK_DECLS([MAP_FILE])
 AC_CHECK_FUNCS([_gmtime64_s _gmtime64 gmtime_r mmap usleep mkstemp vasprintf getrusage getprogname isxdigit])
 
 # This is for Apple's new CommonCrypto (which is FIPS validated)
-AC_CHECK_FUNCS([CC_MD5_Init CC_SHA1_Init CC_SHA256_Init])
+AC_CHECK_FUNCS([CC_MD5_Init CC_SHA1_Init CC_SHA256_Init CC_SHA512_Init])
 
 # These includes are required on FreeBSD
 AC_CHECK_HEADERS([sys/mount.h],[],[],

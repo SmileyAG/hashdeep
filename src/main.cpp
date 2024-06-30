@@ -24,6 +24,7 @@
 #include "sha1.h"
 #include "sha256.h"
 //#include "sha3.h"
+#include "sha512.h"
 #include "tiger.h"
 #include "whirlpool.h"
 
@@ -366,6 +367,15 @@ void cc_sha256_init(void * ctx)
     }
 }
 
+void cc_sha512_init(void * ctx)
+{
+    if(opt_enable_mac_cc){
+	CC_SHA512_Init((CC_SHA512_CTX *)ctx);
+    } else {
+	hash_init_sha512(ctx);
+    }
+}
+
 void cc_md5_update(void *ctx, const unsigned char *buf, size_t len)
 {
     if(opt_enable_mac_cc){
@@ -390,6 +400,15 @@ void cc_sha256_update(void *ctx, const unsigned char *buf, size_t len)
 	CC_SHA256_Update((CC_SHA256_CTX *)ctx,buf,len);
     } else {
 	hash_update_sha256(ctx,buf,len);
+    }
+}
+
+void cc_sha512_update(void *ctx, const unsigned char *buf, size_t len)
+{
+    if(opt_enable_mac_cc){
+	CC_SHA512_Update((CC_SHA512_CTX *)ctx,buf,len);
+    } else {
+	hash_update_sha512(ctx,buf,len);
     }
 }
 
@@ -420,6 +439,15 @@ void cc_sha256_final(void *ctx, unsigned char *digest)
 	hash_final_sha256(ctx,digest);
     }
 }
+
+void cc_sha512_final(void *ctx, unsigned char *digest)
+{
+    if(opt_enable_mac_cc){
+	CC_SHA512_Final(digest,(CC_SHA512_CTX *)ctx);
+    } else {
+	hash_final_sha512(ctx,digest);
+    }
+}
 #endif
 
 
@@ -435,13 +463,16 @@ void algorithm_t::load_hashing_algorithms()
     assert(sizeof(struct CC_MD5state_st)<MAX_ALGORITHM_CONTEXT_SIZE);
     assert(sizeof(struct CC_SHA1state_st)<MAX_ALGORITHM_CONTEXT_SIZE);
     assert(sizeof(struct CC_SHA256state_st)<MAX_ALGORITHM_CONTEXT_SIZE);
+    assert(sizeof(struct CC_SHA512state_st)<MAX_ALGORITHM_CONTEXT_SIZE);
     add_algorithm(alg_md5,       "md5",       128, cc_md5_init,         cc_md5_update,         cc_md5_final,         DEFAULT_ENABLE_MD5);
     add_algorithm(alg_sha1,      "sha1",      160, cc_sha1_init,        cc_sha1_update,        cc_sha1_final,        DEFAULT_ENABLE_SHA1);
     add_algorithm(alg_sha256,    "sha256",    256, cc_sha256_init,      cc_sha256_update,      cc_sha256_final,      DEFAULT_ENABLE_SHA256);
+    add_algorithm(alg_sha512,    "sha512",    512, cc_sha512_init,      cc_sha512_update,      cc_sha512_final,      DEFAULT_ENABLE_SHA512);
 #else
     add_algorithm(alg_md5,       "md5",       128, hash_init_md5,       hash_update_md5,       hash_final_md5,       DEFAULT_ENABLE_MD5);
     add_algorithm(alg_sha1,      "sha1",      160, hash_init_sha1,      hash_update_sha1,      hash_final_sha1,      DEFAULT_ENABLE_SHA1);
     add_algorithm(alg_sha256,    "sha256",    256, hash_init_sha256,    hash_update_sha256,    hash_final_sha256,    DEFAULT_ENABLE_SHA256);
+    add_algorithm(alg_sha512,    "sha512",    512, hash_init_sha512,    hash_update_sha512,    hash_final_sha512,    DEFAULT_ENABLE_SHA512);
 #endif
     add_algorithm(alg_tiger,     "tiger",     192, hash_init_tiger,     hash_update_tiger,     hash_final_tiger,     DEFAULT_ENABLE_TIGER);
     add_algorithm(alg_whirlpool, "whirlpool", 512, hash_init_whirlpool, hash_update_whirlpool, hash_final_whirlpool, DEFAULT_ENABLE_WHIRLPOOL);
