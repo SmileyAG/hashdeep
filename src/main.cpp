@@ -164,6 +164,7 @@ void state::hashdeep_usage()
 #else
     ocb.status("-j <num>  - ignored (compiled without pthreads)");
 #endif
+    ocb.status("-Q        - hide user path");
   }
 
   // -hh makes us more verbose
@@ -614,7 +615,7 @@ int state::hashdeep_process_command_line(int argc_, char **argv_)
     bool did_usage = false;
   int i;
 
-  while ((i=getopt(argc_,argv_,"abc:CdeEF:f:o:I:i:MmXxtlk:rsp:wvVhW:0D:uj:")) != -1)  {
+  while ((i=getopt(argc_,argv_,"abc:CdeEF:f:o:I:i:MmXxtlk:rsp:wvVhW:0D:uj:Q")) != -1)  {
     switch (i)
     {
     case 'a':
@@ -741,6 +742,7 @@ int state::hashdeep_process_command_line(int argc_, char **argv_)
     case 'j': ocb.opt_threadcount = atoi(optarg); break;
     case 'F': ocb.opt_iomode = iomode::toiomode(optarg);break;
     case 'E': ocb.opt_case_sensitive = false; break;
+    case 'Q': ocb.opt_hide_user_path = true; break;
 
     case 'h':
 	usage_count++;
@@ -1160,13 +1162,17 @@ std::string state::make_banner()
 	}
     }
     utf8_banner += std::string("filename") + NEWLINE;
-    utf8_banner += "## Invoked from: " + global::make_utf8(global::getcwd()) + NEWLINE;
-    utf8_banner += "## ";
+    if (!ocb.opt_hide_user_path)
+        utf8_banner += "## Invoked from: " + global::make_utf8(global::getcwd()) + NEWLINE;
+    utf8_banner += "##";
 #ifdef _WIN32
-    std::wstring cwd = global::getcwd();
-    std::string  cwd8 = global::make_utf8(cwd);
-
-    utf8_banner += cwd8 + ">";
+    if (!ocb.opt_hide_user_path)
+    {
+        utf8_banner += " ";
+        std::wstring cwd = global::getcwd();
+        std::string  cwd8 = global::make_utf8(cwd);
+        utf8_banner += cwd8 + ">";
+    }
 #else
     utf8_banner += (geteuid()==0) ? "#" : "$";
 #endif

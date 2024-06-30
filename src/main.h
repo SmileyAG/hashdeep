@@ -585,6 +585,7 @@ class display {
       opt_display_hash(false),
       opt_show_matched(false),
       opt_case_sensitive(true),
+      opt_hide_user_path(false),
       opt_iomode(iomode::buffered),	// by default, use buffered
 #ifdef HAVE_PTHREAD
       opt_threadcount(threadpool::numCPU()),
@@ -620,6 +621,7 @@ class display {
     bool	opt_display_hash;
     bool	opt_show_matched;
     bool        opt_case_sensitive;
+    bool	opt_hide_user_path;
     int		opt_iomode;
     int		opt_threadcount;
 
